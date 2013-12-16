@@ -30,7 +30,7 @@ function getImages() {
 	$("#thumbnails").empty();
 	var counter = 1;
 	var dir = $("#dir").val();
-
+	$("#thumbnails").append(dir);
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
 		var keys = [];
 		for(var k in result) keys.unshift(parseInt(k));
