@@ -43,7 +43,8 @@ function getImages() {
 			section.append($("<h3>").append("Level " + sectionNumber));
 			$("#thumbnails").append(section);
 			var v2 = result[j];
-			$.each(v2, function(i, field){				
+			$.each(v2, function(i,field){
+				console.debug(field);
 				var id = counter;
 				var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");

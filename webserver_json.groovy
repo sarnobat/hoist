@@ -1,9 +1,14 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,9 +18,11 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.comparator.SizeFileComparator;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,10 +41,9 @@ public class Server {
 		@GET
 		@Path("json")
 		@Produces("application/json")
-		public Response json(@QueryParam("dir") String iPath) throws JSONException {
+		public Response json(@QueryParam("dir") String iPath) throws JSONException, UnsupportedEncodingException {
 
-			String[] extensions = { "jpg" };
-			String dir = URLDecoder.decode(iPath);
+			String dir = URLDecoder.decode(iPath, "UTF-8");
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
 
 				public boolean accept(File file) {
@@ -48,17 +54,19 @@ public class Server {
 					return false;
 				}
 			}, null);
+			List<File> fileList = new LinkedList<File>(files);
+			Collections.sort(fileList, SizeFileComparator.SIZE_REVERSE);
 			System.out.println(files.size());
 			JSONObject outerJson = new JSONObject();
 
 			// Level zero
-			JSONObject json = new JSONObject();
-			for (Object o : files) {
+			JSONArray jsonLevel0 = new JSONArray();
+			for (Object o : fileList) {
 				File f = (File) o;
-				json.put(f.getAbsolutePath(), f.getAbsolutePath());
+				jsonLevel0.put(f.getAbsolutePath());
 				System.out.println(f.getAbsolutePath());
 			}
-			outerJson.put("0", json);
+			outerJson.put("0", jsonLevel0);
 			// Upper levels
 			String inner = dir + "/_+1";
 			File innerDir = new File(inner);
@@ -88,10 +96,13 @@ public class Server {
 					return false;
 				}
 			}, null);
-			JSONObject json = new JSONObject();
-			for (Object o : files) {
+
+			List<File> fileList = new LinkedList<File>(files);
+			Collections.sort(fileList, SizeFileComparator.SIZE_REVERSE);
+			JSONArray json = new JSONArray();
+			for (Object o : fileList) {
 				File f = (File) o;
-				json.put(f.getAbsolutePath(), f.getAbsolutePath());
+				json.put(f.getAbsolutePath());
 				System.out.println(f.getAbsolutePath());
 			}
 			outerJson.put(((Integer) level).toString(), json);
