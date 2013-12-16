@@ -32,6 +32,7 @@ function duplicate(field,id) {
     });
 }
 
+// TODO: handle case where parent dir contains a file with the same name
 function wrongCategory(field,id) {
 	$.getJSON("http://localhost:9099/helloworld/wrongCategory?path=" + encodeURIComponent(field),function(result){
 		var elem = $("#"+id).remove();
@@ -94,7 +95,10 @@ $(document).ready(function(){
 
 	<select id="dir" name="sometext" onchange="getImages()">	
 	
+	
 		<option>/Users/sarnobat/Desktop/family</option>
+		<option>/Users/sarnobat/Windows/Web/Friends/Ketaki/Jayaprakash uncle's albums/(1m) Jp Prakash's Photos - shravanabelagola, Halebidu, Belur_files</option>
+		<option>/Users/sarnobat/Windows/Web/Friends/Ketaki/script</option>
 		<option>
 	/Users/sarnobat/Windows/favorites/teen/cris
 		</option>	
