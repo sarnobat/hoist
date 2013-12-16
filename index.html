@@ -39,9 +39,19 @@ function wrongCategory(field,id) {
 }
 
 function getImages() {
+
+
 	$("#thumbnails").empty();
 	var counter = 1;
 	var dir = $("#dir").val();
+	
+	// First, update the address bar
+	var dirEncoded = "";
+	if (dir != null) {
+		dirEncoded = encodeURIComponent(dir);
+	}
+ 	window.history.pushState(null,"vi", "index.html?dir=" + dirEncoded );
+
 	$("#thumbnails").append(dir);
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
 		var keys = [];
