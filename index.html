@@ -29,9 +29,9 @@ function getImages() {
 		
 		for (var i = 0; i < keys.length; i++) {
 			var j = keys[i];
-			alert(result[j]);
-			var section = $("<div>").attr("style","float : left").attr("align", "center");
-			section.append($("<h3>").append("Level " + j));
+			var sectionNumber = j;
+			var section = $("<div>").attr("id", sectionNumber).attr("style","float : left").attr("align", "center");
+			section.append($("<h3>").append("Level " + sectionNumber));
 			$("#thumbnails").append(section);
 			var v2 = result[j];
 			$.each(v2, function(i, field){				
