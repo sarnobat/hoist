@@ -17,6 +17,8 @@ public class Server {
         @Path("helloworld")
         public static class HelloWorldResource { // Must be public
 
+				private String _dir = "/Users/sarnobat/Windows/misc/ind/btt";
+
                 @GET
                 @Path("json")
                 @Produces("application/json")
@@ -24,7 +26,8 @@ public class Server {
                 		System.out.println("1");
                         JSONObject json = new JSONObject();
                 		System.out.println("2");
-                        json.put("foo", "bar");
+                        json.put("img", _dir + "/wp_Janubaba_DeepikaPadukonebycoolman_201032123814NINCA6.jpg");
+						json.put("foo", "bar");
                 		System.out.println("3");
 					    return Response.ok().header("Access-Control-Allow-Origin", "*")
 						 			.entity(json.toString()).type("application/json").build();
