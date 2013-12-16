@@ -50,12 +50,7 @@ public class Server {
 			}, null);
 			System.out.println(files.size());
 			JSONObject outerJson = new JSONObject();
-			// Upper levels
-			String inner = dir + "/_+1";
-			File innerDir = new File(inner);
-			if (innerDir.exists()) {
-				addLevel(innerDir, outerJson, 1);
-			}
+
 			// Level zero
 			JSONObject json = new JSONObject();
 			for (Object o : files) {
@@ -64,6 +59,12 @@ public class Server {
 				System.out.println(f.getAbsolutePath());
 			}
 			outerJson.put("0", json);
+			// Upper levels
+			String inner = dir + "/_+1";
+			File innerDir = new File(inner);
+			if (innerDir.exists()) {
+				addLevel(innerDir, outerJson, 1);
+			}
 			System.out.println(outerJson.toString());
 			return Response.ok().header("Access-Control-Allow-Origin", "*")
 					.entity(outerJson.toString()).type("application/json").build();
@@ -87,7 +88,7 @@ public class Server {
 				json.put(f.getAbsolutePath(), f.getAbsolutePath());
 				System.out.println(f.getAbsolutePath());
 			}
-			outerJson.put(((Integer)level).toString(), json);
+			outerJson.put(((Integer) level).toString(), json);
 		}
 
 		//
