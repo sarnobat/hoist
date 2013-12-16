@@ -40,13 +40,10 @@ function wrongCategory(field,id) {
 }
 
 function getImages(url) {
-
-
 	$("#thumbnails").empty();
 	var counter = 1;
 
 	var dir = url;	
-	// First, update the address bar
 	var dirEncoded = "";
 	if (dir != null) {
 		dirEncoded = encodeURIComponent(dir);
