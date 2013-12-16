@@ -6,6 +6,9 @@
 </script>
 <script>
 
+function down() {
+	alert('down');
+}
 
 $(document).ready(function(){
   
@@ -13,7 +16,7 @@ $(document).ready(function(){
       $.each(result, function(i, field){
         var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
 		var container = $("<span>").attr("style","float : left").attr("align", "center");
-		var upButton = "<button value='up' style='bgcolog:blue'>-Up-</button>";
+		var upButton = $("<button>").text("-Up-").click(function(){alert(field)});
 		var downButton = $("<button>").text("Down").click(function(){alert(field)});
 		container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
         $("div").append(container);
