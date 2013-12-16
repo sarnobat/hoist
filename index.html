@@ -5,16 +5,16 @@
 <script src="jquery/jquery-1.9.1.js">
 </script>
 <script>
+
+
 $(document).ready(function(){
   
     $.getJSON("http://localhost:9099/helloworld/json?param1=" + document.getElementById("urls").innerHTML,function(result){
       $.each(result, function(i, field){
         var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
-        //var up = $("button").onclick();
-		//$("div").append(up);
 		var container = $("<span>").attr("style","float : left").attr("align", "center");
 		var upButton = "<button value='up' style='bgcolog:blue'>-Up-</button>";
-		var downButton = "<button>Down</button>";
+		var downButton = "<button onclick='alert('"+field+"')'>Down</button>";
 		container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
         $("div").append(container);
       });
