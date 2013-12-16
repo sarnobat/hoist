@@ -70,18 +70,24 @@ public class Server {
 		@Path("moveUp")
 		@Produces("application/json")
 		public Response moveUp(@QueryParam("path") String iPath) throws JSONException {
+			System.out.println("moveUp() - " + iPath);
 			JSONObject json = new JSONObject();
 
-			append_higher_rank_dir_to_containing_dir: {
+			_append_higher_rank_dir_to_containing_dir: {
 				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
 				System.out.println();
 				String theTargetDirPath = theContainingDirPath + "/" + HIGHER_RANK;
 				File theTargetDir = new File(theTargetDirPath);
 				boolean createTargetDir = true;
 				File fileToMove = new File(iPath);
+				String destinationFilePath;
+				String fileShortName = FilenameUtils.getName(iPath);
+				System.out.println("moveUp() - checking if exists");
 				if (theTargetDir.exists()) {
+					System.out
+							.println("moveUp() - dir already exists, need to make sure existing file is not overwritten");
 					createTargetDir = false;
-					String destinationFilePath = theTargetDirPath;
+					destinationFilePath = theTargetDirPath + "/" + fileShortName;
 					String extension = FilenameUtils.getExtension(destinationFilePath);
 					String destinationFilePathWithoutExtension = destinationFilePath.substring(0,
 							destinationFilePath.lastIndexOf('.'));
@@ -91,20 +97,31 @@ public class Server {
 						destinationFilePath = destinationFilePathWithoutExtension + "." + extension;
 						destinationFile = new File(destinationFilePath);
 					}
+					fileShortName = FilenameUtils.getName(destinationFilePath);
 					// Double check, for now. We don't want to lose any images
-					if (new File(destinationFilePath).exists()) {
+					if (destinationFile.exists()) {
 						throw new RuntimeException("Developer error");
 					}
 				}
+
 				try {
+					System.out.println("moveUp() - about to move");
 					FileUtils.moveFileToDirectory(fileToMove, theTargetDir, createTargetDir);
 					System.out.println("moveUp() - success");
+					check : {
+						File newFile = new File(theTargetDirPath + "/" + fileShortName);
+						// check that it exists
+						if (!newFile.exists()) {
+							throw new RuntimeException("Developer error");
+						}
+						System.out.println("moveUp() - " + newFile.getAbsolutePath());
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 
-			System.out.println("moveUp() - " + iPath);
+			System.out.println("moveUp() - end");
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
 		}
