@@ -7,6 +7,7 @@ import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class Server {
 
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
+		private static final Collection<String> IGNORED_FILES= new LinkedHashSet<String>(){{
+			add(".DS_Store");
+		}};
 
 		//
 		// Read-only operations
@@ -47,6 +51,9 @@ public class Server {
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
 
 				public boolean accept(File file) {
+					if (IGNORED_FILES.contains(file.getName())) {
+						
+					}
 					return true;
 				}
 
