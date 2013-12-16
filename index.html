@@ -58,7 +58,7 @@ function getImages() {
 			$.each(v2, function(i,field){
 				console.debug(field);
 				var id = counter;
-				var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
+				var img = $("<img>").attr("src", field ).attr("height","250px").attr("border","3px").attr("style","border-color:#ffffff;");
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
 				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
@@ -83,8 +83,43 @@ $(document).ready(function(){
 <body>
 
 	<select id="dir" name="sometext" onchange="getImages()">		
+
 		<option>
 			/Users/sarnobat/Windows/misc/ind/btt
+		</option>
+
+		<option>
+			/Users/sarnobat/Windows/misc/btt/ind
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/ind/legs
+		</option>
+		<option>
+/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle
+		</option>
+		<option>
+/Users/sarnobat/Windows/favorites/teen
+		</option>
+		<option>
+/Users/sarnobat/Windows/favorites
+		</option>
+		<option>
+/Users/sarnobat/Windows/favorites/friends
+		</option>
+		<option>
+/Users/sarnobat/Windows/favorites/ind
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/legs
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/btt
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/brst
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/wwe/Rosa Mendes
 		</option>
 		<option>
 			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst
