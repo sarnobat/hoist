@@ -55,8 +55,9 @@ public class Server {
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
 
 				public boolean accept(File file) {
+					// TODO: This isn't working
 					if (IGNORED_FILES.contains(file.getName())) {
-return false;
+						return false;
 					}
 					return true;
 				}
@@ -129,7 +130,7 @@ return false;
 			String inner = dir.getAbsolutePath() + incrementStrFull;
 			File innerDir2 = new File(inner);
 			if (innerDir2.exists()) {
-				getImagesAtLevel(innerDir2, outerJson, -1, -1);
+				getImagesAtLevel(innerDir2, outerJson, level + increment, increment);
 			}
 		}
 
@@ -192,11 +193,23 @@ return false;
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
 		}
+		
+		@GET
+		@Path("wrongCategory")
+		@Produces("application/json")
+		public Response wrongCategory(@QueryParam("path") String iPath) throws JSONException {
+			moveToParentDir(new File(iPath));
+			JSONObject json = new JSONObject();
+			System.out.println("removeDuplicate() - end");
+			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
+					.type("application/json").build();
+		}
 
 		/**
 		 * 
 		 * @param iPath
-		 * @param targetSubdirName - just the name, not the path
+		 * @param targetSubdirName
+		 *            - just the name, not the path
 		 */
 		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
 			_1: {

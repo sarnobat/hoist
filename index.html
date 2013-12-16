@@ -29,7 +29,12 @@ function down(field,id) {
 function duplicate(field,id) {
 	$.getJSON("http://localhost:9099/helloworld/duplicate?path=" + encodeURIComponent(field),function(result){
 		var elem = $("#"+id).remove();
-		$("#" + targetLevel).append(elem);
+    });
+}
+
+function wrongCategory(field,id) {
+	$.getJSON("http://localhost:9099/helloworld/wrongCategory?path=" + encodeURIComponent(field),function(result){
+		var elem = $("#"+id).remove();
     });
 }
 
@@ -58,7 +63,8 @@ function getImages() {
 				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
 				var duplicateButton = $("<button>").text("Duplicate").click(function(){duplicate(field, id)});
-				var thumbnail = container.append("<br>").append(img).append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton);
+				var wrongCategoryButton = $("<button>").text("Wrong Category").click(function(){wrongCategory(field, id)});
+				var thumbnail = container.append("<br>").append(img).append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton).append("<br>").append(wrongCategoryButton);
 				section.append(thumbnail);
 				counter++;
 			});
