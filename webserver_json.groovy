@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
@@ -22,7 +23,10 @@ public class Server {
 	public static class HelloWorldResource { // Must be public
 
 		private String _dir = "/Users/sarnobat/Windows/misc/ind/btt";
-
+		
+		//
+		// Read-only operations
+		//
 		@GET
 		@Path("json")
 		@Produces("application/json")
@@ -51,6 +55,21 @@ public class Server {
 				System.out.println(f.getAbsolutePath());
 			}
 			System.out.println(json.toString());
+			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
+					.type("application/json").build();
+		}
+		
+		//
+		// Write operations
+		//
+		
+		@GET
+		@Path("moveUp")
+		@Produces("application/json")
+		public Response moveUp(@QueryParam("path") String iPath) throws JSONException {
+			JSONObject json = new JSONObject();
+			
+			System.out.println("moveUp() - " + iPath);
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
 		}
