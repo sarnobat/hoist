@@ -23,12 +23,9 @@ public class Server {
                 @Path("json")
                 @Produces("application/json")
                 public Response json() throws JSONException {
-                		System.out.println("1");
                         JSONObject json = new JSONObject();
-                		System.out.println("2");
                         json.put("img", _dir + "/wp_Janubaba_DeepikaPadukonebycoolman_201032123814NINCA6.jpg");
 						json.put("foo", "bar");
-                		System.out.println("3");
 					    return Response.ok().header("Access-Control-Allow-Origin", "*")
 						 			.entity(json.toString()).type("application/json").build();
                 }
