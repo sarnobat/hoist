@@ -26,7 +26,11 @@ public class Server {
 
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
-		private String _dir = "/Users/sarnobat/Windows/misc/ind/btt";
+		
+		private String _dir = "/Users/sarnobat/Windows/misc/ind/brst/amateur";
+		//private String _dir = "/Users/sarnobat/Windows/misc/wwe/Bella/btt";
+		//private String _dir = "/Users/sarnobat/Windows/misc/brst";
+		//private String _dir = "/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst";
 
 		//
 		// Read-only operations
@@ -36,11 +40,6 @@ public class Server {
 		@Produces("application/json")
 		public Response json() throws JSONException {
 			JSONObject json = new JSONObject();
-			json.put("img", _dir + "/wp_Janubaba_DeepikaPadukonebycoolman_201032123814NINCA6.jpg");
-			json.put(
-					"img2",
-					_dir
-							+ "/wp_Janubaba_RaimaSen_200542323920O4R141-2335724f84eae731c503f88521bebab6.jpg");
 			String[] extensions = { "jpg" };
 			Collection<File> files = FileUtils.listFiles(new File(_dir), new IOFileFilter() {
 

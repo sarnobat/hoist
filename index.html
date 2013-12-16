@@ -6,25 +6,32 @@
 </script>
 <script>
 
-function down(field) {
+function up(field,id) {
+
+	$.getJSON("http://localhost:9099/helloworld/moveUp?path=" + field,function(result){
+			$("#"+id).remove();
+	});
+}
+
+function down(field,id) {
 	$.getJSON("http://localhost:9099/helloworld/moveDown?path=" + field,function(result){
+			$("#"+id).remove();
     });
 }
 
-function up(field) {
-	$.getJSON("http://localhost:9099/helloworld/moveUp?path=" + field,function(result){
-    });
-}
 
 $(document).ready(function(){  
+	var counter = 1;
     $.getJSON("http://localhost:9099/helloworld/json?param1=",function(result){
       $.each(result, function(i, field){
+        var id = counter;
         var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
-		var container = $("<span>").attr("style","float : left").attr("align", "center");
-		var upButton = $("<button>").text("-Up-").click(function(){up(field)});
-		var downButton = $("<button>").text("Down").click(function(){down(field)});
+		var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "center");
+		var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
+		var downButton = $("<button>").text("Down").click(function(){down(field, id)});
 		container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
         $("div").append(container);
+        counter++;
       });
     });
   
@@ -33,7 +40,6 @@ $(document).ready(function(){
 </head>
 
 <body>
-
 	<div></div>
 
 </body>
