@@ -63,14 +63,20 @@ public class Server {
 			String inner = dir + "/_+1";
 			File innerDir = new File(inner);
 			if (innerDir.exists()) {
-				addLevel(innerDir, outerJson, 1);
+				getImagesAtLevel(innerDir, outerJson, 1,1);
+			}
+			// Lower levels
+			String innerMinus = dir + "/_-1";
+			File innerMinusDir = new File(innerMinus);
+			if (innerMinusDir.exists()) {
+				getImagesAtLevel(innerMinusDir, outerJson, -1, -1);
 			}
 			System.out.println(outerJson.toString());
 			return Response.ok().header("Access-Control-Allow-Origin", "*")
 					.entity(outerJson.toString()).type("application/json").build();
 		}
 
-		private void addLevel(File innerDir, JSONObject outerJson, int level) throws JSONException {
+		private void getImagesAtLevel(File innerDir, JSONObject outerJson, int level, int increment) throws JSONException {
 
 			Collection<File> files = FileUtils.listFiles(innerDir, new IOFileFilter() {
 
@@ -89,6 +95,8 @@ public class Server {
 				System.out.println(f.getAbsolutePath());
 			}
 			outerJson.put(((Integer) level).toString(), json);
+			
+			// TODO: recurse
 		}
 
 		//
@@ -103,7 +111,6 @@ public class Server {
 
 			String targetSubdirName = HIGHER_RANK;
 
-			
 			moveFileToSubfolder(iPath, targetSubdirName);
 			JSONObject json = new JSONObject();
 			System.out.println("moveUp() - end");
@@ -117,14 +124,10 @@ public class Server {
 		public Response moveDown(@QueryParam("path") String iPath) throws JSONException {
 			System.out.println("moveUp() - " + iPath);
 			String targetSubdirName = LOWER_RANK;
-			File f = new File(iPath);
-			File parent = f.getParentFile();
-			if (parent.getName().startsWith("_+")) {
-				try {
-					FileUtils.moveFileToDirectory(f, parent.getParentFile(), false);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			File fileToMove = new File(iPath);
+			String higherRank = "_+";
+			if (fileToMove.getParentFile().getName().startsWith(higherRank)) {
+				moveToParentDir(fileToMove);
 			} else {
 				moveFileToSubfolder(iPath, targetSubdirName);
 			}
@@ -133,6 +136,15 @@ public class Server {
 			System.out.println("moveUp() - end");
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
+		}
+
+		public void moveToParentDir(File fileToMove) {
+			try {
+				FileUtils.moveFileToDirectory(fileToMove, fileToMove.getParentFile()
+						.getParentFile(), false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {

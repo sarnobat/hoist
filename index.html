@@ -18,7 +18,11 @@ function up(field,id) {
 
 function down(field,id) {
 	$.getJSON("http://localhost:9099/helloworld/moveDown?path=" + encodeURIComponent(field),function(result){
-			$("#"+id).remove();
+		var currentLevel = $("#"+id).parent().attr("id")
+		var targetLevel = parseInt(currentLevel) - 1;
+		// TODO: handle the case where target level doesn't exist
+		var elem = $("#"+id).remove();
+		$("#" + targetLevel).append(elem);
     });
 }
 
@@ -29,11 +33,12 @@ function getImages() {
 
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
 		var keys = [];
-		for(var k in result) keys.unshift(k);
-		
+		for(var k in result) keys.unshift(parseInt(k));
+		keys.sort().reverse();
 		for (var i = 0; i < keys.length; i++) {
 			var j = keys[i];
 			var sectionNumber = j;
+			console.debug(sectionNumber);
 			var section = $("<div>").attr("id", sectionNumber).attr("style","float : left").attr("align", "center");
 			section.append($("<h3>").append("Level " + sectionNumber));
 			$("#thumbnails").append(section);
