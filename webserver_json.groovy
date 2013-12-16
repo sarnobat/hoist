@@ -28,12 +28,6 @@ public class Server {
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
 		
-		@Deprecated
-		private String _dir = "/Users/sarnobat/Windows/misc/ind/brst/amateur";
-		//private String _dir = "/Users/sarnobat/Windows/misc/wwe/Bella/btt";
-		//private String _dir = "/Users/sarnobat/Windows/misc/brst";
-		//private String _dir = "/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst";
-
 		//
 		// Read-only operations
 		//
@@ -41,10 +35,10 @@ public class Server {
 		@Path("json")
 		@Produces("application/json")
 		public Response json(@QueryParam("dir") String iPath) throws JSONException {
-
+			JSONObject json = new JSONObject();
 			String[] extensions = { "jpg" };
-			String theDir = URLDecoder.decode(iPath);
-			Collection<File> files = FileUtils.listFiles(new File(theDir), new IOFileFilter() {
+			String dir = URLDecoder.decode(iPath);
+			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
 
 				public boolean accept(File file) {
 					return true;
@@ -55,7 +49,6 @@ public class Server {
 				}
 			}, null);
 			System.out.println(files.size());
-			JSONObject json = new JSONObject();
 			for (Object o : files) {
 				File f = (File) o;
 				json.put(f.getAbsolutePath(), f.getAbsolutePath());
@@ -105,9 +98,7 @@ public class Server {
 
 		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
 			_1: {
-				System.out.println(iPath.replace("+", "%2B"));
-				System.out.println(iPath);
-				String theContainingDirPath = FilenameUtils.getFullPath(URLDecoder.decode(iPath.replace("+", "%2B"),"UTF-8"));
+				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
 				System.out.println();
 				String theTargetDirPath = theContainingDirPath + "/" + targetSubdirName;
 				File theTargetDir = new File(theTargetDirPath);
