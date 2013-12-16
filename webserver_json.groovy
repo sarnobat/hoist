@@ -35,7 +35,7 @@ public class Server {
 		@Path("json")
 		@Produces("application/json")
 		public Response json(@QueryParam("dir") String iPath) throws JSONException {
-			JSONObject json = new JSONObject();
+			
 			String[] extensions = { "jpg" };
 			String dir = URLDecoder.decode(iPath);
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
@@ -44,18 +44,22 @@ public class Server {
 					return true;
 				}
 
-				public boolean accept(File dir, String name) {
+				public boolean accept(File dir2, String name) {
 					return false;
 				}
 			}, null);
 			System.out.println(files.size());
+			JSONObject outerJson = new JSONObject();
+			// Level zero
+			JSONObject json = new JSONObject();
 			for (Object o : files) {
 				File f = (File) o;
 				json.put(f.getAbsolutePath(), f.getAbsolutePath());
 				System.out.println(f.getAbsolutePath());
 			}
+			outerJson.put("0",json);
 			System.out.println(json.toString());
-			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
+			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(outerJson.toString())
 					.type("application/json").build();
 		}
 

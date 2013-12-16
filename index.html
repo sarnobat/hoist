@@ -23,18 +23,23 @@ function getImages() {
 	var counter = 1;
 	var dir = $("#dir").val();
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
-      $.each(result, function(i, field){
-        var id = counter;
-        console.debug(i);
-        var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
-		var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "center");
-		var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
-		var downButton = $("<button>").text("Down").click(function(){down(field, id)});
-		container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
-        $("#thumbnails").append(container);
-        counter++;
-      });
-    });
+		$.each(result, function(j, value){
+			$("#thumbnails").append($("<h3>").append("Level " + j));
+			$.each(value, function(i, field){
+				
+				var id = counter;
+				console.debug(i);
+				var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
+				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "center");
+				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
+				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
+				container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
+
+				$("#thumbnails").append(container);
+				counter++;
+			});
+		});
+	});
 }
 
 $(document).ready(function(){  
