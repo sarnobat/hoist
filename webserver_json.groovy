@@ -104,7 +104,9 @@ public class Server {
 
 		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
 			_1: {
-				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
+				System.out.println(iPath.replace("+", "%2B"));
+				System.out.println(iPath);
+				String theContainingDirPath = FilenameUtils.getFullPath(URLDecoder.decode(iPath.replace("+", "%2B"),"UTF-8"));
 				System.out.println();
 				String theTargetDirPath = theContainingDirPath + "/" + targetSubdirName;
 				File theTargetDir = new File(theTargetDirPath);
