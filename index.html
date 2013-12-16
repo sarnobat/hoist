@@ -26,6 +26,13 @@ function down(field,id) {
     });
 }
 
+function duplicate(field,id) {
+	$.getJSON("http://localhost:9099/helloworld/duplicate?path=" + encodeURIComponent(field),function(result){
+		var elem = $("#"+id).remove();
+		$("#" + targetLevel).append(elem);
+    });
+}
+
 function getImages() {
 	$("#thumbnails").empty();
 	var counter = 1;
@@ -50,7 +57,8 @@ function getImages() {
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
 				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
-				var thumbnail = container.append("<br>").append(img).append("<br>").append(upButton).append("<br>").append(downButton);
+				var duplicateButton = $("<button>").text("Duplicate").click(function(){duplicate(field, id)});
+				var thumbnail = container.append("<br>").append(img).append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton);
 				section.append(thumbnail);
 				counter++;
 			});

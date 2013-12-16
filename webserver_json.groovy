@@ -35,9 +35,12 @@ public class Server {
 
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
-		private static final Collection<String> IGNORED_FILES= new LinkedHashSet<String>(){{
-			add(".DS_Store");
-		}};
+		private static final Collection<String> IGNORED_FILES = new LinkedHashSet<String>() {
+			{
+				add(".DS_Store");
+				add(".picasa.ini");
+			}
+		};
 
 		//
 		// Read-only operations
@@ -45,14 +48,15 @@ public class Server {
 		@GET
 		@Path("json")
 		@Produces("application/json")
-		public Response json(@QueryParam("dir") String iPath) throws JSONException, UnsupportedEncodingException {
+		public Response json(@QueryParam("dir") String iPath) throws JSONException,
+				UnsupportedEncodingException {
 
 			String dir = URLDecoder.decode(iPath, "UTF-8");
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
 
 				public boolean accept(File file) {
 					if (IGNORED_FILES.contains(file.getName())) {
-						
+return false;
 					}
 					return true;
 				}
@@ -78,7 +82,7 @@ public class Server {
 			String inner = dir + "/_+1";
 			File innerDir = new File(inner);
 			if (innerDir.exists()) {
-				getImagesAtLevel(innerDir, outerJson, 1,1);
+				getImagesAtLevel(innerDir, outerJson, 1, 1);
 			}
 			// Lower levels
 			String innerMinus = dir + "/_-1";
@@ -91,7 +95,8 @@ public class Server {
 					.entity(outerJson.toString()).type("application/json").build();
 		}
 
-		private void getImagesAtLevel(File dir, JSONObject outerJson, int level, int increment) throws JSONException {
+		private void getImagesAtLevel(File dir, JSONObject outerJson, int level, int increment)
+				throws JSONException {
 
 			Collection<File> files = FileUtils.listFiles(dir, new IOFileFilter() {
 
@@ -113,14 +118,14 @@ public class Server {
 				System.out.println(f.getAbsolutePath());
 			}
 			outerJson.put(((Integer) level).toString(), json);
-			
+
 			// TODO: recurse
 			String subdir;
 			String incrementStr = "-1";
 			if (increment == 1) {
 				incrementStr = "+1";
 			}
-			String incrementStrFull = "/_" +  incrementStr;
+			String incrementStrFull = "/_" + incrementStr;
 			String inner = dir.getAbsolutePath() + incrementStrFull;
 			File innerDir2 = new File(inner);
 			if (innerDir2.exists()) {
@@ -167,7 +172,7 @@ public class Server {
 					.type("application/json").build();
 		}
 
-		public void moveToParentDir(File fileToMove) {
+		private static void moveToParentDir(File fileToMove) {
 			try {
 				FileUtils.moveFileToDirectory(fileToMove, fileToMove.getParentFile()
 						.getParentFile(), false);
@@ -176,6 +181,23 @@ public class Server {
 			}
 		}
 
+		@GET
+		@Path("duplicate")
+		@Produces("application/json")
+		public Response removeDuplicate(@QueryParam("path") String iPath) throws JSONException {
+			String targetSubdirName = "duplicates";
+			moveFileToSubfolder(iPath, targetSubdirName);
+			JSONObject json = new JSONObject();
+			System.out.println("removeDuplicate() - end");
+			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
+					.type("application/json").build();
+		}
+
+		/**
+		 * 
+		 * @param iPath
+		 * @param targetSubdirName - just the name, not the path
+		 */
 		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
 			_1: {
 				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
@@ -186,10 +208,10 @@ public class Server {
 				File fileToMove = new File(iPath);
 				String destinationFilePath;
 				String fileShortName = FilenameUtils.getName(iPath);
-				System.out.println("moveUp() - checking if exists");
+				System.out.println("moveFileToSubfolder() - checking if exists");
 				if (theTargetDir.exists()) {
 					System.out
-							.println("moveUp() - dir already exists, need to make sure existing file is not overwritten");
+							.println("moveFileToSubfolder() - dir already exists, need to make sure existing file is not overwritten");
 					createTargetDir = false;
 					destinationFilePath = theTargetDirPath + "/" + fileShortName;
 					String extension = FilenameUtils.getExtension(destinationFilePath);
@@ -209,16 +231,16 @@ public class Server {
 				}
 
 				try {
-					System.out.println("moveUp() - about to move");
+					System.out.println("moveFileToSubfolder() - about to move");
 					FileUtils.moveFileToDirectory(fileToMove, theTargetDir, createTargetDir);
-					System.out.println("moveUp() - success");
+					System.out.println("moveFileToSubfolder() - success");
 					check: {
 						File newFile = new File(theTargetDirPath + "/" + fileShortName);
 						// check that it exists
 						if (!newFile.exists()) {
 							throw new RuntimeException("Developer error");
 						}
-						System.out.println("moveUp() - " + newFile.getAbsolutePath());
+						System.out.println("moveFileToSubfolder() - " + newFile.getAbsolutePath());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
