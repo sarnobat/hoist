@@ -8,7 +8,11 @@
 
 function up(field,id) {
 	$.getJSON("http://localhost:9099/helloworld/moveUp?path=" + encodeURIComponent(field),function(result){
-			$("#"+id).remove();
+		var currentLevel = $("#"+id).parent().attr("id")
+		var targetLevel = parseInt(currentLevel) + 1;
+		// TODO: handle the case where target level doesn't exist
+		var elem = $("#"+id).remove();
+		$("#" + targetLevel).append(elem);
 	});
 }
 
