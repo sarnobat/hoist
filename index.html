@@ -40,6 +40,7 @@ function wrongCategory(field,id) {
 }
 
 function getImages(url) {
+	$("#dir").val(url);
 	$("#thumbnails").empty();
 	var counter = 1;
 
@@ -49,6 +50,7 @@ function getImages(url) {
 		dirEncoded = encodeURIComponent(dir);
 	}
  	window.history.pushState(null,"vi", "index.html?dir=" + dirEncoded );
+	// TODO (minor): update the combo box value
 
 	$("#thumbnails").append(dir);
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
