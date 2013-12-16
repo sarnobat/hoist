@@ -76,9 +76,9 @@ public class Server {
 					.entity(outerJson.toString()).type("application/json").build();
 		}
 
-		private void getImagesAtLevel(File innerDir, JSONObject outerJson, int level, int increment) throws JSONException {
+		private void getImagesAtLevel(File dir, JSONObject outerJson, int level, int increment) throws JSONException {
 
-			Collection<File> files = FileUtils.listFiles(innerDir, new IOFileFilter() {
+			Collection<File> files = FileUtils.listFiles(dir, new IOFileFilter() {
 
 				public boolean accept(File file) {
 					return true;
@@ -97,6 +97,17 @@ public class Server {
 			outerJson.put(((Integer) level).toString(), json);
 			
 			// TODO: recurse
+			String subdir;
+			String incrementStr = "-1";
+			if (increment == 1) {
+				incrementStr = "+1";
+			}
+			String incrementStrFull = "/_" +  incrementStr;
+			String inner = dir.getAbsolutePath() + incrementStrFull;
+			File innerDir2 = new File(inner);
+			if (innerDir2.exists()) {
+				getImagesAtLevel(innerDir2, outerJson, -1, -1);
+			}
 		}
 
 		//
