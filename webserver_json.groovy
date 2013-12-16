@@ -41,7 +41,7 @@ public class Server {
 		@Path("json")
 		@Produces("application/json")
 		public Response json(@QueryParam("dir") String iPath) throws JSONException {
-			JSONObject json = new JSONObject();
+
 			String[] extensions = { "jpg" };
 			String theDir = URLDecoder.decode(iPath);
 			Collection<File> files = FileUtils.listFiles(new File(theDir), new IOFileFilter() {
@@ -55,6 +55,7 @@ public class Server {
 				}
 			}, null);
 			System.out.println(files.size());
+			JSONObject json = new JSONObject();
 			for (Object o : files) {
 				File f = (File) o;
 				json.put(f.getAbsolutePath(), f.getAbsolutePath());
