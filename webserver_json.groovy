@@ -25,6 +25,7 @@ public class Server {
 	public static class HelloWorldResource { // Must be public
 
 		private static final String HIGHER_RANK = "_+1";
+		private static final String LOWER_RANK = "_-1";
 		private String _dir = "/Users/sarnobat/Windows/misc/ind/btt";
 
 		//
@@ -71,12 +72,39 @@ public class Server {
 		@Produces("application/json")
 		public Response moveUp(@QueryParam("path") String iPath) throws JSONException {
 			System.out.println("moveUp() - " + iPath);
+
+			String targetSubdirName = HIGHER_RANK;
+
 			JSONObject json = new JSONObject();
 
-			_append_higher_rank_dir_to_containing_dir: {
+			moveFileToSubfolder(iPath, targetSubdirName);
+
+			System.out.println("moveUp() - end");
+			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
+					.type("application/json").build();
+		}
+		@GET
+		@Path("moveDown")
+		@Produces("application/json")
+		public Response moveDown(@QueryParam("path") String iPath) throws JSONException {
+			System.out.println("moveUp() - " + iPath);
+
+			String targetSubdirName = LOWER_RANK;
+
+			JSONObject json = new JSONObject();
+
+			moveFileToSubfolder(iPath, targetSubdirName);
+
+			System.out.println("moveUp() - end");
+			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
+					.type("application/json").build();
+		}
+
+		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
+			_1: {
 				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
 				System.out.println();
-				String theTargetDirPath = theContainingDirPath + "/" + HIGHER_RANK;
+				String theTargetDirPath = theContainingDirPath + "/" + targetSubdirName;
 				File theTargetDir = new File(theTargetDirPath);
 				boolean createTargetDir = true;
 				File fileToMove = new File(iPath);
@@ -108,7 +136,7 @@ public class Server {
 					System.out.println("moveUp() - about to move");
 					FileUtils.moveFileToDirectory(fileToMove, theTargetDir, createTargetDir);
 					System.out.println("moveUp() - success");
-					check : {
+					check: {
 						File newFile = new File(theTargetDirPath + "/" + fileShortName);
 						// check that it exists
 						if (!newFile.exists()) {
@@ -120,10 +148,6 @@ public class Server {
 					e.printStackTrace();
 				}
 			}
-
-			System.out.println("moveUp() - end");
-			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
-					.type("application/json").build();
 		}
 	}
 

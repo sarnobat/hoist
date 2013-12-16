@@ -7,9 +7,8 @@
 <script>
 
 function down(field) {
-
-
-	alert('down:' + field);
+	$.getJSON("http://localhost:9099/helloworld/moveDown?path=" + field,function(result){
+    });
 }
 
 function up(field) {
