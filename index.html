@@ -7,13 +7,14 @@
 <script>
 
 function down(field) {
-	$.getJSON("http://localhost:9099/helloworld/moveUp?path=" + field,function(result){
-    });
 
+
+	alert('down:' + field);
 }
 
 function up(field) {
-	alert('down:' + field);
+	$.getJSON("http://localhost:9099/helloworld/moveUp?path=" + field,function(result){
+    });
 }
 
 $(document).ready(function(){  

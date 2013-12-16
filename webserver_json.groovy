@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -10,6 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -22,8 +24,9 @@ public class Server {
 	@Path("helloworld")
 	public static class HelloWorldResource { // Must be public
 
+		private static final String HIGHER_RANK = "_+1";
 		private String _dir = "/Users/sarnobat/Windows/misc/ind/btt";
-		
+
 		//
 		// Read-only operations
 		//
@@ -58,17 +61,49 @@ public class Server {
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
 		}
-		
+
 		//
 		// Write operations
 		//
-		
+
 		@GET
 		@Path("moveUp")
 		@Produces("application/json")
 		public Response moveUp(@QueryParam("path") String iPath) throws JSONException {
 			JSONObject json = new JSONObject();
-			
+
+			append_higher_rank_dir_to_containing_dir: {
+				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
+				System.out.println();
+				String theTargetDirPath = theContainingDirPath + "/" + HIGHER_RANK;
+				File theTargetDir = new File(theTargetDirPath);
+				boolean createTargetDir = true;
+				File fileToMove = new File(iPath);
+				if (theTargetDir.exists()) {
+					createTargetDir = false;
+					String destinationFilePath = theTargetDirPath;
+					String extension = FilenameUtils.getExtension(destinationFilePath);
+					String destinationFilePathWithoutExtension = destinationFilePath.substring(0,
+							destinationFilePath.lastIndexOf('.'));
+					File destinationFile = new File(destinationFilePath);
+					while (destinationFile.exists()) {
+						destinationFilePathWithoutExtension += "1";
+						destinationFilePath = destinationFilePathWithoutExtension + "." + extension;
+						destinationFile = new File(destinationFilePath);
+					}
+					// Double check, for now. We don't want to lose any images
+					if (new File(destinationFilePath).exists()) {
+						throw new RuntimeException("Developer error");
+					}
+				}
+				try {
+					FileUtils.moveFileToDirectory(fileToMove, theTargetDir, createTargetDir);
+					System.out.println("moveUp() - success");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 			System.out.println("moveUp() - " + iPath);
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
