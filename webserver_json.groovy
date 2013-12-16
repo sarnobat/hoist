@@ -31,11 +31,13 @@ public class Server {
                         json.put("img2", _dir + "/wp_Janubaba_RaimaSen_200542323920O4R141-2335724f84eae731c503f88521bebab6.jpg");
                         String[] extensions = { "jpg" };
                         Collection<File> files = FileUtils.listFiles(new File(_dir), extensions,true);
+						System.out.println(files.size());
                         for (Object o : files) {
                         	File f = (File)o;
                         	json.put(f.getAbsolutePath(),f.getAbsolutePath());
+							System.out.println(f.getAbsolutePath());
                         }
-                        
+                        System.out.println(json.toString());
 					    return Response.ok().header("Access-Control-Allow-Origin", "*")
 						 			.entity(json.toString()).type("application/json").build();
                 }

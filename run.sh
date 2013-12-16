@@ -1,8 +1,14 @@
-open "index.html" || xdg-open "index.html"
+
 
 cd .groovy/lib
 mkdir -p ~/.groovy/lib
 cp *jar ~/.groovy/lib/
 cd ../..
 
-groovy webserver_json.groovy
+groovy webserver_json.groovy &
+
+sleep 3s
+
+open "index.html" || xdg-open "index.html"
+
+fg
