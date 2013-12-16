@@ -19,28 +19,43 @@ function down(field,id) {
     });
 }
 
-
-$(document).ready(function(){  
+function getImages() {
+	$("#thumbnails").empty();
 	var counter = 1;
-    $.getJSON("http://localhost:9099/helloworld/json?param1=",function(result){
+	var dir = $("#dir").val();
+    $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
       $.each(result, function(i, field){
         var id = counter;
+        console.debug(i);
         var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
 		var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "center");
 		var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 		var downButton = $("<button>").text("Down").click(function(){down(field, id)});
 		container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
-        $("div").append(container);
+        $("#thumbnails").append(container);
         counter++;
       });
     });
+}
+
+$(document).ready(function(){  
+	getImages();
+	
   
 });
 </script>
 </head>
 
 <body>
-	<div></div>
+
+	<select id="dir" name="sometext" onchange="getImages()">
+		<option>/Users/sarnobat/Windows/misc/ind/brst/amateur</option>
+		<option>/Users/sarnobat/Windows/misc/wwe/Bella/btt</option>
+		<option>/Users/sarnobat/Windows/misc/brst</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst</option>
+	</select>
+
+	<div id="thumbnails"></div>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.Collection;
 
 import javax.ws.rs.GET;
@@ -27,6 +28,7 @@ public class Server {
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
 		
+		@Deprecated
 		private String _dir = "/Users/sarnobat/Windows/misc/ind/brst/amateur";
 		//private String _dir = "/Users/sarnobat/Windows/misc/wwe/Bella/btt";
 		//private String _dir = "/Users/sarnobat/Windows/misc/brst";
@@ -38,10 +40,11 @@ public class Server {
 		@GET
 		@Path("json")
 		@Produces("application/json")
-		public Response json() throws JSONException {
+		public Response json(@QueryParam("dir") String iPath) throws JSONException {
 			JSONObject json = new JSONObject();
 			String[] extensions = { "jpg" };
-			Collection<File> files = FileUtils.listFiles(new File(_dir), new IOFileFilter() {
+			String theDir = URLDecoder.decode(iPath);
+			Collection<File> files = FileUtils.listFiles(new File(theDir), new IOFileFilter() {
 
 				public boolean accept(File file) {
 					return true;
