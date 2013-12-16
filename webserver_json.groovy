@@ -103,10 +103,9 @@ public class Server {
 
 			String targetSubdirName = HIGHER_RANK;
 
-			JSONObject json = new JSONObject();
-
+			
 			moveFileToSubfolder(iPath, targetSubdirName);
-
+			JSONObject json = new JSONObject();
 			System.out.println("moveUp() - end");
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
@@ -117,13 +116,20 @@ public class Server {
 		@Produces("application/json")
 		public Response moveDown(@QueryParam("path") String iPath) throws JSONException {
 			System.out.println("moveUp() - " + iPath);
-
 			String targetSubdirName = LOWER_RANK;
+			File f = new File(iPath);
+			File parent = f.getParentFile();
+			if (parent.getName().startsWith("_+")) {
+				try {
+					FileUtils.moveFileToDirectory(f, parent.getParentFile(), false);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				moveFileToSubfolder(iPath, targetSubdirName);
+			}
 
 			JSONObject json = new JSONObject();
-
-			moveFileToSubfolder(iPath, targetSubdirName);
-
 			System.out.println("moveUp() - end");
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
