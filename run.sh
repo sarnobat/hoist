@@ -1,4 +1,6 @@
+#!/bin/bash
 
+set -m
 
 cd .groovy/lib
 mkdir -p ~/.groovy/lib
