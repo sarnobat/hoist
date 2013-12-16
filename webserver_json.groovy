@@ -27,7 +27,7 @@ public class Server {
 
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
-		
+
 		//
 		// Read-only operations
 		//
@@ -35,7 +35,7 @@ public class Server {
 		@Path("json")
 		@Produces("application/json")
 		public Response json(@QueryParam("dir") String iPath) throws JSONException {
-			
+
 			String[] extensions = { "jpg" };
 			String dir = URLDecoder.decode(iPath);
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
@@ -50,6 +50,12 @@ public class Server {
 			}, null);
 			System.out.println(files.size());
 			JSONObject outerJson = new JSONObject();
+			// Upper levels
+			String inner = dir + "/_+1";
+			File innerDir = new File(inner);
+			if (innerDir.exists()) {
+				addLevel(innerDir, outerJson, 1);
+			}
 			// Level zero
 			JSONObject json = new JSONObject();
 			for (Object o : files) {
@@ -57,10 +63,31 @@ public class Server {
 				json.put(f.getAbsolutePath(), f.getAbsolutePath());
 				System.out.println(f.getAbsolutePath());
 			}
-			outerJson.put("0",json);
-			System.out.println(json.toString());
-			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(outerJson.toString())
-					.type("application/json").build();
+			outerJson.put("0", json);
+			System.out.println(outerJson.toString());
+			return Response.ok().header("Access-Control-Allow-Origin", "*")
+					.entity(outerJson.toString()).type("application/json").build();
+		}
+
+		private void addLevel(File innerDir, JSONObject outerJson, int level) throws JSONException {
+
+			Collection<File> files = FileUtils.listFiles(innerDir, new IOFileFilter() {
+
+				public boolean accept(File file) {
+					return true;
+				}
+
+				public boolean accept(File dir3, String name) {
+					return false;
+				}
+			}, null);
+			JSONObject json = new JSONObject();
+			for (Object o : files) {
+				File f = (File) o;
+				json.put(f.getAbsolutePath(), f.getAbsolutePath());
+				System.out.println(f.getAbsolutePath());
+			}
+			outerJson.put(((Integer)level).toString(), json);
 		}
 
 		//
@@ -83,6 +110,7 @@ public class Server {
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
 		}
+
 		@GET
 		@Path("moveDown")
 		@Produces("application/json")
