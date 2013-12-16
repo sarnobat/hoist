@@ -39,12 +39,34 @@ function wrongCategory(field,id) {
     });
 }
 
-function getImages() {
+function getImages(url) {
 
 
 	$("#thumbnails").empty();
 	var counter = 1;
-	var dir = $("#dir").val();
+
+	//var dir = $("#dir").val();
+	var dir = url;
+
+	// First put the current textbox selection into the URL
+
+/*alert("Check the textbox value");
+	var dir = "";
+	// URL
+	if (window.location.search.length == 0) {
+		dir = $("#dir").val();
+				//alert(">>>" + window.location.search + "<<<");	
+				//alert("URL" + dir);
+
+	} 
+	// Textbox
+	else {
+		dir = decodeURIComponent(window.location.search.replace('?dir=',''));
+					//	alert("Textbox" + dir);
+	}
+	//alert("dir: " + dir);	
+	//alert("query param length: " + window.location.search.length);
+	*/
 	
 	// First, update the address bar
 	var dirEncoded = "";
@@ -83,8 +105,15 @@ function getImages() {
 	});
 }
 
-$(document).ready(function(){  
-	getImages();
+$(document).ready(function(){
+	if (window.location.search.length == 0) {
+		dir = $("#dir").val();
+	} 
+	// Textbox
+	else {
+		dir = decodeURIComponent(window.location.search.replace('?dir=',''));
+	}
+	getImages(dir);
 	
   
 });
@@ -93,7 +122,7 @@ $(document).ready(function(){
 
 <body>
 
-	<select id="dir" name="sometext" onchange="getImages()">	
+	<select id="dir" name="sometext" onchange="getImages($('#dir').val())">	
 		<option>/Users/sarnobat/Windows/usb/Photos/2013-12-28 Family portraits</option>
 		<option>/Users/sarnobat/Windows/usb/Photos/2013-12-28 Family portraits/individual</option>
 		<option>/Users/sarnobat/Desktop/family</option>
