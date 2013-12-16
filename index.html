@@ -45,29 +45,7 @@ function getImages(url) {
 	$("#thumbnails").empty();
 	var counter = 1;
 
-	//var dir = $("#dir").val();
-	var dir = url;
-
-	// First put the current textbox selection into the URL
-
-/*alert("Check the textbox value");
-	var dir = "";
-	// URL
-	if (window.location.search.length == 0) {
-		dir = $("#dir").val();
-				//alert(">>>" + window.location.search + "<<<");	
-				//alert("URL" + dir);
-
-	} 
-	// Textbox
-	else {
-		dir = decodeURIComponent(window.location.search.replace('?dir=',''));
-					//	alert("Textbox" + dir);
-	}
-	//alert("dir: " + dir);	
-	//alert("query param length: " + window.location.search.length);
-	*/
-	
+	var dir = url;	
 	// First, update the address bar
 	var dirEncoded = "";
 	if (dir != null) {
