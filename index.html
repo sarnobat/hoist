@@ -24,7 +24,7 @@ function getImages() {
 	var dir = $("#dir").val();
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
 		$.each(result, function(j, value){
-			var section = $("<span>").attr("style","float : left").attr("align", "center").append("Level " + j);
+			var section = $("<div>").attr("style","float : left").attr("align", "center").append("Level " + j);
 			$("#thumbnails").append(section);
 			console.debug(value);
 			$.each(value, function(i, field){
@@ -40,7 +40,8 @@ function getImages() {
 				//section.append(container);
 				
 				//$("#thumbnails").append(container);
-				$("#thumbnails").append(thumbnail);
+				//$("#thumbnails").append(thumbnail);
+				section.append(thumbnail);
 				counter++;
 			});
 		});
