@@ -46,10 +46,10 @@ function getImages() {
 			$.each(v2, function(i, field){				
 				var id = counter;
 				var img = $("<img>").attr("src", field ).attr("height","100px").attr("border","3px").attr("style","border-color:#ffffff;");
-				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "center");
+				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
 				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
-				var thumbnail = container.append(upButton).append("<br>").append(img).append("<br>").append(downButton);
+				var thumbnail = container.append("<br>").append(img).append("<br>").append(upButton).append("<br>").append(downButton);
 				section.append(thumbnail);
 				counter++;
 			});
@@ -68,6 +68,31 @@ $(document).ready(function(){
 <body>
 
 	<select id="dir" name="sometext" onchange="getImages()">		
+		<option>
+			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/legs
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/btt
+		</option>
+		<option>
+			/Users/sarnobat/Windows/Web/Friends/Poorvi/script
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/wwe/Sunny
+		</option>
+		
+		<!--option>
+			 /Users/sarnobat/Windows/Web/Friends/Poorvi Rohidekar/script_sorted
+		</option-->
+		<option>
+			/Users/sarnobat/Windows/Web/Friends/Poorvi
+		</option>
+		<option>
+			/Users/sarnobat/Windows/misc/ind/btt
+		</option>
 		<option>
 			/Users/sarnobat/Windows/misc/btt
 		</option>
