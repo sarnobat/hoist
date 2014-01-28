@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -35,12 +34,12 @@ public class HoistServer {
 
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
-		private static final Collection<String> IGNORED_FILES = new LinkedHashSet<String>() {
-			{
-				add(".DS_Store");
-				add(".picasa.ini");
-			}
-		};
+//		private static final Collection<String> IGNORED_FILES = new LinkedHashSet<String>() {
+//			{
+//				add(".DS_Store");
+//				add(".picasa.ini");
+//			}
+//		};
 
 		//
 		// Read-only operations
@@ -56,9 +55,9 @@ public class HoistServer {
 
 				public boolean accept(File file) {
 					// TODO: This isn't working
-					if (IGNORED_FILES.contains(file.getName())) {
-						return false;
-					}
+//					if (IGNORED_FILES.contains(file.getName())) {
+//						return false;
+//					}
 					return true;
 				}
 
@@ -121,7 +120,6 @@ public class HoistServer {
 			outerJson.put(((Integer) level).toString(), json);
 
 			// TODO: recurse
-			String subdir;
 			String incrementStr = "-1";
 			if (increment == 1) {
 				incrementStr = "+1";
