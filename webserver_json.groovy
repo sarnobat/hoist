@@ -34,7 +34,8 @@ public class HoistServer {
 
 		private static final String HIGHER_RANK = "_+1";
 		private static final String LOWER_RANK = "_-1";
-//		private static final Collection<String> IGNORED_FILES = new LinkedHashSet<String>() {
+		private static final Collection<String> IGNORED_FILES = new LinkedHashSet<String>() ;
+//		{
 //			{
 //				add(".DS_Store");
 //				add(".picasa.ini");
@@ -55,9 +56,9 @@ public class HoistServer {
 
 				public boolean accept(File file) {
 					// TODO: This isn't working
-//					if (IGNORED_FILES.contains(file.getName())) {
-//						return false;
-//					}
+					if (IGNORED_FILES.contains(file.getName())) {
+						return false;
+					}
 					return true;
 				}
 
