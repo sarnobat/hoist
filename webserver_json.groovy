@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 import com.sun.net.httpserver.HttpServer;
 
-public class Server {
+public class HoistServer {
 	@Path("helloworld")
 	public static class HelloWorldResource { // Must be public
 
