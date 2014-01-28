@@ -53,6 +53,7 @@ function getImages(url) {
 	// TODO (minor): update the combo box value
 
 	$("#thumbnails").append(dir);
+	var videoCount = 0;
     $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
 		var keys = [];
 		for(var k in result) keys.unshift(parseInt(k));
@@ -66,15 +67,31 @@ function getImages(url) {
 			$("#thumbnails").append(section);
 			var v2 = result[j];
 			$.each(v2, function(i,field){
-				console.debug(field);
+				var img;
+				if (/.*mp4/.test(field) || /.*flv/.test(field) || /.*webm/.test(field)) {
+					console.debug("video: " + field);					
+
+					if (videoCount < 20) {
+						var img = $("<video>").attr("height", "250px").attr('controls','').attr('muted','');
+						img.append($("<source>").attr("src",field).attr('type','video/x-flv'));
+						img.append($("<source>").attr("src",field).attr('type','video/mp4'));
+						img.append($("<source>").attr("src",field).attr('type','video/webm'));
+						img.append($("<source>").attr("src",field).attr('type','video/mpg'));
+						videoCount++;
+					}
+					//.attr("src", field )
+					//<video height="240" preload controls><source src="$1"  /><source src="$1" type="video/webm"></video>
+				} else {
+					//console.debug(field);
+					var img = $("<img>").attr("src", field ).attr("height","250px").attr("border","3px").attr("style","border-color:#ffffff;");
+				}
 				var id = counter;
-				var img = $("<img>").attr("src", field ).attr("height","250px").attr("border","3px").attr("style","border-color:#ffffff;");
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
 				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
 				var duplicateButton = $("<button>").text("Duplicate").click(function(){duplicate(field, id)});
 				var wrongCategoryButton = $("<button>").text("Wrong Category").click(function(){wrongCategory(field, id)});
-				var thumbnail = container.append("<br>").append(img).append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton).append("<br>").append(wrongCategoryButton);
+				var thumbnail = container.append("<br>").append(img).append("<br>").append(field).append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton).append("<br>").append(wrongCategoryButton);
 				section.append(thumbnail);
 				counter++;
 			});
@@ -100,14 +117,30 @@ $(document).ready(function(){
 <body>
 
 	<select id="dir" name="sometext" onchange="getImages($('#dir').val())">	
+		<!--
+		
+		<option></option>
+							-->
+							<option>/Users/sarnobat/videos/other</option>
+							<option>/Users/sarnobat/videos/other/teen</option>
+		<option>/Volumes/Unsorted/Videos/other/</option>
+		<option>/Volumes/Unsorted/Videos/other/teen</option>
+		<option>/Volumes/MAC/Sridhar_move_these_2/videos/other/teen</option>
+		<option>/Volumes/MAC/Sridhar_move_these_2/videos/other</option>
+		<option>/Users/sarnobat/Desktop/new/videos/Atletico</option>
+		<option>/Users/sarnobat/Desktop/samsaya/btt</option>
 		<option>/Users/sarnobat/Windows/usb/Photos/2013-12-28 Family portraits</option>
 		<option>/Users/sarnobat/Windows/usb/Photos/2013-12-28 Family portraits/individual</option>
 		<option>/Users/sarnobat/Desktop/family</option>
+		<option>/Users/sarnobat/Windows/Web/Friends/Priyal</option>
 		<option>/Users/sarnobat/Windows/Web/Friends/Ketaki/Jayaprakash uncle's albums/(1m) Jp Prakash's Photos - shravanabelagola, Halebidu, Belur_files</option>
 		<option>/Users/sarnobat/Windows/Web/Friends/Ketaki/script</option>
+		<option>/Users/sarnobat/Windows/misc/ind/tammana/lips</option>
+		<option>/Users/sarnobat/Windows/misc/ind/tammana/brst</option>
 		<option>/Users/sarnobat/Windows/misc/vg</option>
 		<option> /Users/sarnobat/Windows/misc/brst</option>	
 		<option> /Users/sarnobat/Windows/misc/hips</option>	
+		<option>/Users/sarnobat/Windows/misc/ind/lips</option>	
 		<option> /Users/sarnobat/Windows/misc/olsen twins</option>
 		<option>
 	/Users/sarnobat/Windows/favorites/teen/cris
