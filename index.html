@@ -72,18 +72,15 @@ function getImages(url) {
 					console.debug("video: " + field);					
 
 					if (videoCount < 20) {
-						var img = $("<video>").attr("height", "250px").attr('controls','').attr('muted','');
+						img = $("<video>").attr("height", "250px").attr('controls','').attr('muted','');
 						img.append($("<source>").attr("src",field).attr('type','video/x-flv'));
 						img.append($("<source>").attr("src",field).attr('type','video/mp4'));
 						img.append($("<source>").attr("src",field).attr('type','video/webm'));
 						img.append($("<source>").attr("src",field).attr('type','video/mpg'));
 						videoCount++;
 					}
-					//.attr("src", field )
-					//<video height="240" preload controls><source src="$1"  /><source src="$1" type="video/webm"></video>
 				} else {
-					//console.debug(field);
-					var img = $("<img>").attr("src", field ).attr("height","250px").attr("border","3px").attr("style","border-color:#ffffff;");
+					img = $("<img>").attr("src", field ).attr("height","250px").attr("border","3px").attr("style","border-color:#ffffff;");
 				}
 				var id = counter;
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
@@ -121,8 +118,8 @@ $(document).ready(function(){
 		
 		<option></option>
 							-->
-							<option>/Users/sarnobat/videos/other</option>
-							<option>/Users/sarnobat/videos/other/teen</option>
+		<option>/Users/sarnobat/videos/other</option>
+		<option>/Users/sarnobat/videos/other/teen</option>
 		<option>/Volumes/Unsorted/Videos/other/</option>
 		<option>/Volumes/Unsorted/Videos/other/teen</option>
 		<option>/Volumes/MAC/Sridhar_move_these_2/videos/other/teen</option>
