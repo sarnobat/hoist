@@ -62,16 +62,19 @@ function getImages(url) {
 			var sectionNumber = sectionNumbers[i];
 			console.debug(sectionNumber);
 			var section = $("<div>").attr("id", sectionNumber).attr("style","float : left").attr("align", "center");
-			section.append($("<h3>").append("Level " + sectionNumber));
+			section.append($("<h1>").append("Level " + sectionNumber));
 			$("#thumbnails").append(section);
 			var v2 = result[sectionNumber];
+			
+			var height = 300 + (sectionNumber * 3 * 80);
+			
 			$.each(v2, function(i,field){
 				var img;
 				if (/.*mp4/.test(field) || /.*flv/.test(field) || /.*webm/.test(field)) {
 					console.debug("video: " + field);					
 
 					if (videoCount < 20) {
-						img = $("<video>").attr("height", "250px").attr('controls','').attr('muted','');
+						img = $("<video>").attr("height", height + "px").attr('controls','').attr('muted','');
 						img.append($("<source>").attr("src",field).attr('type','video/x-flv'));
 						img.append($("<source>").attr("src",field).attr('type','video/mp4'));
 						img.append($("<source>").attr("src",field).attr('type','video/webm'));
@@ -79,7 +82,7 @@ function getImages(url) {
 						videoCount++;
 					}
 				} else {
-					img = $("<img>").attr("src", field ).attr("height","250px").attr("border","3px").attr("style","border-color:#ffffff;");
+					img = $("<img>").attr("src", field ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
 				}
 				var id = counter;
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
@@ -134,100 +137,43 @@ $(document).ready(function(){
 		<option>/Users/sarnobat/Windows/misc/ind/tammana/lips</option>
 		<option>/Users/sarnobat/Windows/misc/ind/tammana/brst</option>
 		<option>/Users/sarnobat/Windows/misc/vg</option>
-		<option> /Users/sarnobat/Windows/misc/brst</option>	
-		<option> /Users/sarnobat/Windows/misc/hips</option>	
+		<option>/Users/sarnobat/Windows/misc/brst</option>	
+		<option>/Users/sarnobat/Windows/misc/hips</option>	
 		<option>/Users/sarnobat/Windows/misc/ind/lips</option>	
-		<option> /Users/sarnobat/Windows/misc/olsen twins</option>
-		<option>
-	/Users/sarnobat/Windows/favorites/teen/cris
-		</option>	
-		<option>
-	/Users/sarnobat/Windows/favorites/teen/Kristina Fey
-		</option>
-		<option>
-/Users/sarnobat/Windows/misc/ind/brst
-		</option>	
-		<option>	
-			/Users/sarnobat/Windows/misc/teen/middle
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/wwe/Candice/brst
-		</option>
-		<option>
-/Users/sarnobat/Windows/usb/Photos/2013-12-24 Liverpool Anfield stadium tour/Anfield
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/ind/btt
-		</option>
-
-		<option>
-			/Users/sarnobat/Windows/misc/btt/ind
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/ind/legs
-		</option>
-		<option>
-/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle
-		</option>
-		<option>
-		/Users/sarnobat/Windows/favorites/legs
-		</option>
-		<option>
-/Users/sarnobat/Windows/favorites/tennis
-		</option>
-		<option>
-/Users/sarnobat/Windows/favorites/teen
-		</option>
-		<option>
-/Users/sarnobat/Windows/favorites
-		</option>
-		<option>
-/Users/sarnobat/Windows/favorites/friends
-		</option>
-		<option>
-/Users/sarnobat/Windows/favorites/ind
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/legs
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/btt
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/brst
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/wwe/Rosa Mendes
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/legs
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/btt
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/wwe/Sunny
-		</option>
+		<option>/Users/sarnobat/Windows/misc/olsen twins</option>
+		<option>/Users/sarnobat/Windows/favorites/teen/cris</option>	
+		<option>/Users/sarnobat/Windows/favorites/teen/Kristina Fey</option>
+		<option>/Users/sarnobat/Windows/misc/ind/brst</option>	
+		<option>/Users/sarnobat/Windows/misc/teen/middle</option>
+		<option>/Users/sarnobat/Windows/misc/wwe/Candice/brst</option>
+		<option>/Users/sarnobat/Windows/usb/Photos/2013-12-24 Liverpool Anfield stadium tour/Anfield</option>
+		<option>/Users/sarnobat/Windows/misc/ind/btt</option>
+		<option>/Users/sarnobat/Windows/misc/btt/ind</option>
+		<option>/Users/sarnobat/Windows/misc/ind/legs</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle</option>
+		<option>/Users/sarnobat/Windows/favorites/legs</option>
+		<option>/Users/sarnobat/Windows/favorites/tennis</option>
+		<option>/Users/sarnobat/Windows/favorites/teen</option>
+		<option>/Users/sarnobat/Windows/favorites</option>
+		<option>/Users/sarnobat/Windows/favorites/friends</option>
+		<option>/Users/sarnobat/Windows/favorites/ind</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/legs</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/btt</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/middle/brst</option>
+		<option>/Users/sarnobat/Windows/misc/wwe/Rosa Mendes</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/brst</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/legs</option>
+		<option>/Users/sarnobat/Windows/misc/teen/primejailbat.com/high/btt</option>
+		<option>/Users/sarnobat/Windows/misc/wwe/Sunny</option>
 		
 		<!--option>
 			 /Users/sarnobat/Windows/Web/Friends/Poorvi Rohidekar/script_sorted
 		</option-->
-		<option>
-			/Users/sarnobat/Windows/Web/Friends/Poorvi/script
-		</option>
+		<option>/Users/sarnobat/Windows/Web/Friends/Poorvi/script</option>
 
-		<option>
-		  /Users/sarnobat/Windows/Web/Friends/Poorvi Rohidekar
-		</option>
-		<option>
-			/Users/sarnobat/Windows/Web/Friends/Poorvi
-		</option>
-		<option>
-			/Users/sarnobat/Windows/misc/btt
-		</option>
+		<option>  /Users/sarnobat/Windows/Web/Friends/Poorvi Rohidekar</option>
+		<option>/Users/sarnobat/Windows/Web/Friends/Poorvi</option>
+		<option>/Users/sarnobat/Windows/misc/btt</option>
 		<option>/Users/sarnobat/Windows/misc/ind/brst/amateur</option>
 		<option>/Users/sarnobat/Windows/misc/wwe/Bella/btt</option>
 		<option>/Users/sarnobat/Windows/misc/brst</option>
