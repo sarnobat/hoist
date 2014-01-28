@@ -64,23 +64,26 @@ function getImages(url) {
 			var section = $("<div>").attr("id", sectionNumber).attr("style","float : left").attr("align", "center");
 			section.append($("<h1>").append("Level " + sectionNumber));
 			$("#thumbnails").append(section);
-			var v2 = result[sectionNumber];
+			var v2 = shuffle(result[sectionNumber]);
+			var height = 300 - (sectionNumber * 3 * 20);
 			
-			var height = 300 + (sectionNumber * 3 * 80);
-			
+			var localVideoCount = 0;
 			$.each(v2, function(i,field){
 				var img;
 				if (/.*mp4/.test(field) || /.*flv/.test(field) || /.*webm/.test(field)) {
-					console.debug("video: " + field);					
+					//console.debug("video: " + field);					
 
-					if (videoCount < 20) {
-						img = $("<video>").attr("height", height + "px").attr('controls','').attr('muted','');
-						img.append($("<source>").attr("src",field).attr('type','video/x-flv'));
-						img.append($("<source>").attr("src",field).attr('type','video/mp4'));
-						img.append($("<source>").attr("src",field).attr('type','video/webm'));
-						img.append($("<source>").attr("src",field).attr('type','video/mpg'));
-						videoCount++;
+					if (localVideoCount < 3 ||  sectionNumber == 0) {
+						if (videoCount < 20) {
+							img = $("<video>").attr("height", height + "px").attr('controls','').attr('muted','');
+							img.append($("<source>").attr("src",field).attr('type','video/x-flv'));
+							img.append($("<source>").attr("src",field).attr('type','video/mp4'));
+							img.append($("<source>").attr("src",field).attr('type','video/webm'));
+							img.append($("<source>").attr("src",field).attr('type','video/mpg'));
+							videoCount++;
+						}
 					}
+					localVideoCount++;
 				} else {
 					img = $("<img>").attr("src", field ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
 				}
@@ -97,6 +100,11 @@ function getImages(url) {
 		}
 	});
 }
+
+function shuffle(o){ //v1.0
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
 
 $(document).ready(function(){
 	if (window.location.search.length == 0) {
@@ -120,6 +128,7 @@ $(document).ready(function(){
 		
 		<option></option>
 							-->
+		<option>/Volumes/Unsorted/Videos/other/teen</option>
 		<option>/Users/sarnobat/videos/other</option>
 		<option>/Users/sarnobat/videos/other/teen</option>
 		<option>/Volumes/Unsorted/Videos/other/</option>
