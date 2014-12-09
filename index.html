@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" href="http://netgear.rohidekar.com/static/icons/Orb_Icons_019.png" type="image/x-icon" />
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"> -->
 <script src="jquery/jquery-1.9.1.js">
 </script>
 <script>
 
 function up(field,id) {
-	$.getJSON("http://localhost:9099/helloworld/moveUp?path=" + encodeURIComponent(field),function(result){
+	$.getJSON("http://netgear.rohidekar.com:4463/helloworld/moveUp?path=" + encodeURIComponent(field),function(result){
 		var currentLevel = $("#"+id).parent().attr("id")
 		var targetLevel = parseInt(currentLevel) + 1;
 		// TODO: handle the case where target level doesn't exist
@@ -17,7 +18,7 @@ function up(field,id) {
 }
 
 function down(field,id) {
-	$.getJSON("http://localhost:9099/helloworld/moveDown?path=" + encodeURIComponent(field),function(result){
+	$.getJSON("http://netgear.rohidekar.com:4463/helloworld/moveDown?path=" + encodeURIComponent(field),function(result){
 		var currentLevel = $("#"+id).parent().attr("id")
 		var targetLevel = parseInt(currentLevel) - 1;
 		// TODO: handle the case where target level doesn't exist
@@ -27,14 +28,14 @@ function down(field,id) {
 }
 
 function duplicate(field,id) {
-	$.getJSON("http://localhost:9099/helloworld/duplicate?path=" + encodeURIComponent(field),function(result){
+	$.getJSON("http://netgear.rohidekar.com:4463/helloworld/duplicate?path=" + encodeURIComponent(field),function(result){
 		var elem = $("#"+id).remove();
     });
 }
 
 // TODO: handle case where parent dir contains a file with the same name
 function wrongCategory(field,id) {
-	$.getJSON("http://localhost:9099/helloworld/wrongCategory?path=" + encodeURIComponent(field),function(result){
+	$.getJSON("http://netgear.rohidekar.com:4463/helloworld/wrongCategory?path=" + encodeURIComponent(field),function(result){
 		var elem = $("#"+id).remove();
     });
 }
@@ -54,7 +55,8 @@ function getImages(url) {
 
 	$("#thumbnails").append(dir);
 	var videoCount = 0;
-    $.getJSON("http://localhost:9099/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
+    $.getJSON("http://netgear.rohidekar.com:4463/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
+		alert(result);
 		var sectionNumbers = [];
 		for(var k in result) sectionNumbers.unshift(parseInt(k));
 		sectionNumbers.sort().reverse();
@@ -128,7 +130,7 @@ $(document).ready(function(){
 		
 		<option></option>
 		-->
-
+                <option>/media/sarnobat/Unsorted/images/soccer</option>
 		                <option>/sarnobat.garagebandbroken/trash/100CANON</option>
 		<option>/sarnobat.garagebandbroken/Windows/usb/Photos/2014-05-13 Los Angeles/originals/Sridhar</option>
 		<option>/Users/sarnobat/Windows/usb/Photos/rsync_temp/dad old CD-Rs/2003/My Pictures/Cats & dogs & otlher</option>

@@ -50,7 +50,7 @@ public class HoistServer {
 		@Produces("application/json")
 		public Response json(@QueryParam("dir") String iPath) throws JSONException,
 				UnsupportedEncodingException {
-
+			System.out.println("getImages() - " + iPath);
 			String dir = URLDecoder.decode(iPath, "UTF-8");
 			Collection<File> files = FileUtils.listFiles(new File(dir), new IOFileFilter() {
 
@@ -75,7 +75,12 @@ public class HoistServer {
 			JSONArray jsonLevel0 = new JSONArray();
 			for (Object o : fileList) {
 				File f = (File) o;
-				jsonLevel0.put(f.getAbsolutePath());
+try {
+				jsonLevel0.put(httpLinkFor(f.getAbsolutePath().toString()));
+} catch (Exception e) {
+System.err.println(e);
+e.printStackTrace();
+}
 				System.out.println(f.getAbsolutePath());
 			}
 			outerJson.put("0", jsonLevel0);
@@ -259,10 +264,47 @@ public class HoistServer {
 				}
 			}
 		}
+                private String httpLinkFor(String iAbsolutePath) {
+                        // Unsorted
+                        String rHttpUrl = iAbsolutePath.replaceFirst("/Volumes/Unsorted/",
+                                        "http://netgear.rohidekar.com:8020/");
+                        rHttpUrl = rHttpUrl.replaceFirst("/media/sarnobat/Unsorted/",
+                                        "http://netgear.rohidekar.com:8020/");
+
+                        // Record
+                        rHttpUrl = rHttpUrl.replaceFirst("/media/sarnobat/Record/",
+                                        "http://netgear.rohidekar.com:8024/");
+                        rHttpUrl = rHttpUrl.replaceFirst("/Volumes/Record/",
+                                        "http://netgear.rohidekar.com:8024/");
+                        rHttpUrl = rHttpUrl.replaceFirst("/Record/",
+                                        "http://netgear.rohidekar.com:8024/");
+
+                        // Large
+                        rHttpUrl = rHttpUrl.replaceFirst("/media/sarnobat/Large/",
+                                        "http://netgear.rohidekar.com:8021/");
+                        rHttpUrl = rHttpUrl.replaceFirst("/Volumes/Large/",
+                                        "http://netgear.rohidekar.com:8021/");
+
+                        rHttpUrl = rHttpUrl.replaceFirst(".*/e/Sridhar/Photos",
+                                        "http://netgear.rohidekar.com:8022/");
+
+                        // Books
+                        rHttpUrl = rHttpUrl.replaceFirst(".*/e/Sridhar/Books",
+                                        "http://netgear.rohidekar.com:8023/");
+
+                        rHttpUrl = rHttpUrl.replaceFirst(".*/e/new",
+                                        "http://netgear.rohidekar.com:8025/");
+
+                        rHttpUrl = rHttpUrl.replaceFirst(".*/e/Drive J",
+                                        "http://netgear.rohidekar.com:8026/");
+
+
+                        return rHttpUrl;
+                }
 	}
 
 	public static void main(String[] args) throws URISyntaxException {
 		HttpServer server = JdkHttpServerFactory.createHttpServer(
-				new URI("http://localhost:9099/"), new ResourceConfig(HelloWorldResource.class));
+				new URI("http://localhost:4463/"), new ResourceConfig(HelloWorldResource.class));
 	}
 }
