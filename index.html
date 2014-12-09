@@ -70,7 +70,10 @@ function getImages(url) {
 			var height = 300 - (sectionNumber * 3 * 20);
 			
 			var localVideoCount = 0;
-			$.each(v2, function(i,field){
+			$.each(v2, function(i, file){
+				var field = file.localPath;
+				var filePath = file.localPath;
+				var webLink = file.webLink;
 				var img;
 				if (/.*mp4/.test(field) || /.*flv/.test(field) || /.*webm/.test(field)) {
 					//console.debug("video: " + field);					
@@ -87,7 +90,7 @@ function getImages(url) {
 					}
 					localVideoCount++;
 				} else {
-					img = $("<img>").attr("src", field ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
+					img = $("<img>").attr("src", webLink ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
 				}
 				var id = counter;
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");

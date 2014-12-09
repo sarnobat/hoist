@@ -76,7 +76,10 @@ public class HoistServer {
 			for (Object o : fileList) {
 				File f = (File) o;
 try {
-				jsonLevel0.put(httpLinkFor(f.getAbsolutePath().toString()));
+	JSONObject fileJson = new JSONObject();
+	fileJson.put("webLink", httpLinkFor(f.getAbsolutePath().toString()));
+	fileJson.put("localPath", f.getAbsolutePath().toString());
+				jsonLevel0.put(fileJson);
 } catch (Exception e) {
 System.err.println(e);
 e.printStackTrace();
