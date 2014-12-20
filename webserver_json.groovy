@@ -1,3 +1,8 @@
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -123,7 +128,15 @@ e.printStackTrace();
 			JSONArray json = new JSONArray();
 			for (Object o : fileList) {
 				File f = (File) o;
-				json.put(f.getAbsolutePath());
+try {
+        JSONObject fileJson = new JSONObject();
+        fileJson.put("webLink", httpLinkFor(f.getAbsolutePath().toString()));
+        fileJson.put("localPath", f.getAbsolutePath().toString());
+                                json.put(fileJson);
+} catch (Exception e) {
+System.err.println(e);
+e.printStackTrace();
+}
 				System.out.println(f.getAbsolutePath());
 			}
 			outerJson.put(((Integer) level).toString(), json);
@@ -180,14 +193,74 @@ e.printStackTrace();
 					.type("application/json").build();
 		}
 
-		private static void moveToParentDir(File fileToMove) {
+		private static void moveToParentDir(String sourceFilePathString) {
+			System.out.println("moveToParentDir() - begin " + sourceFilePathString);
+                        if (sourceFilePathString.endsWith("htm") || sourceFilePathString.endsWith(".html")) {
+                                throw new RuntimeException("Need to move the _files folder too");
+                        }
 			try {
-				FileUtils.moveFileToDirectory(fileToMove, fileToMove.getParentFile()
-						.getParentFile(), false);
-			} catch (IOException e) {
+                        doMoveToParent(sourceFilePathString);
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+
+   		private static void doMoveToParent(String sourceFilePathString)
+                                throws IllegalAccessError {
+                        java.nio.file.Path sourceFilePath = Paths.get(sourceFilePathString);
+                        java.nio.file.Path destinationFile = getDestinationFilePathAvoidingExisting(sourceFilePath);
+                        doMove(sourceFilePath, destinationFile);
+                        System.out.println("File now resides at "
+                                        + destinationFile.toAbsolutePath().toString());
+                }
+
+                private static java.nio.file.Path getDestinationFilePathAvoidingExisting(java.nio.file.Path sourceFile)
+                                throws IllegalAccessError {
+                        java.nio.file.Path destinationFile;
+                        _1: {
+
+                                String filename = sourceFile.getFileName().toString();
+                                java.nio.file.Path parent = sourceFile.getParent().getParent().toAbsolutePath();
+                                String parentPath = parent.toAbsolutePath().toString();
+                                String destinationFilePath = parentPath + "/" + filename;
+                                destinationFile = determineDestinationPathAvoidingExisting(destinationFilePath);
+                        }
+                        return destinationFile;
+                }
+
+
+                private static java.nio.file.Path determineDestinationPathAvoidingExisting(
+                                String destinationFilePath) throws IllegalAccessError {
+                        String destinationFilePathWithoutExtension = destinationFilePath
+                                        .substring(0, destinationFilePath.lastIndexOf('.'));
+                        String extension = FilenameUtils.getExtension(destinationFilePath);
+                        java.nio.file.Path rDestinationFile = Paths.get(destinationFilePath);
+                        while (Files.exists(rDestinationFile)) {
+                                destinationFilePathWithoutExtension += "1";
+                                destinationFilePath = destinationFilePathWithoutExtension + "." + extension;
+                                rDestinationFile = Paths.get(destinationFilePath);
+                        }
+                        if (Files.exists(rDestinationFile)) {
+                                throw new IllegalAccessError(
+                                                "an existing file will get overwritten");
+                        }
+                        return rDestinationFile;
+                }
+
+
+      		private static void doMove(java.nio.file.Path path, java.nio.file.Path destinationFile)
+                                throws IllegalAccessError {
+                        try {
+                                Files.move(path, destinationFile);// By default, it won't
+                                                                                                        // overwrite existing
+                                System.out.println("Success: file now at "
+                                                + destinationFile.toAbsolutePath());
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                throw new IllegalAccessError("Moving did not work");
+                        }
+                }
 
 		@GET
 		@Path("duplicate")
@@ -205,9 +278,9 @@ e.printStackTrace();
 		@Path("wrongCategory")
 		@Produces("application/json")
 		public Response wrongCategory(@QueryParam("path") String iPath) throws JSONException {
-			moveToParentDir(new File(iPath));
+			moveToParentDir(iPath);
 			JSONObject json = new JSONObject();
-			System.out.println("removeDuplicate() - end");
+			System.out.println("moveToParentDir() - end");
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
 					.type("application/json").build();
 		}

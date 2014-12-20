@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="shortcut icon" href="http://netgear.rohidekar.com/static/icons/Orb_Icons_019.png" type="image/x-icon" />
+<link rel="shortcut icon" href="http://netgear.rohidekar.com/static/icons/Orb_Icons_023.png" type="image/x-icon" />
+<title>Hoist (Ranking for Content Management System)</title>
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"> -->
 <script src="jquery/jquery-1.9.1.js">
 </script>
@@ -56,7 +57,6 @@ function getImages(url) {
 	$("#thumbnails").append(dir);
 	var videoCount = 0;
     $.getJSON("http://netgear.rohidekar.com:4463/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
-		alert(result);
 		var sectionNumbers = [];
 		for(var k in result) sectionNumbers.unshift(parseInt(k));
 		sectionNumbers.sort().reverse();
@@ -92,13 +92,16 @@ function getImages(url) {
 				} else {
 					img = $("<img>").attr("src", webLink ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
 				}
+				var href = $("<a>");
+				href.attr("href", webLink).attr("target","_blank");
+				href.append(img);
 				var id = counter;
 				var container = $("<span>").attr('id',id).attr("style","float : left").attr("align", "left");
 				var upButton = $("<button>").text("-Up-").click(function(){up(field, id)});
 				var downButton = $("<button>").text("Down").click(function(){down(field, id)});
 				var duplicateButton = $("<button>").text("Duplicate").click(function(){duplicate(field, id)});
 				var wrongCategoryButton = $("<button>").text("Wrong Category").click(function(){wrongCategory(field, id)});
-				var thumbnail = container.append("<br>").append(img).append("<br>").append(field).append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton).append("<br>").append(wrongCategoryButton);
+				var thumbnail = container.append("<br>").append(href).append("<br>").append("<textarea>"+field+"</textarea>").append("<br>").append(upButton).append("<br>").append(downButton).append("<br>").append(duplicateButton).append("<br>").append(wrongCategoryButton);
 				section.append(thumbnail);
 				counter++;
 			});
@@ -134,6 +137,7 @@ $(document).ready(function(){
 		<option></option>
 		-->
                 <option>/media/sarnobat/Unsorted/images/soccer</option>
+		<option>/media/sarnobat/e/Drive J/pictures/Other (new)/pictures/misc_sync_master/ind/btt</option>
 		                <option>/sarnobat.garagebandbroken/trash/100CANON</option>
 		<option>/sarnobat.garagebandbroken/Windows/usb/Photos/2014-05-13 Los Angeles/originals/Sridhar</option>
 		<option>/Users/sarnobat/Windows/usb/Photos/rsync_temp/dad old CD-Rs/2003/My Pictures/Cats & dogs & otlher</option>
