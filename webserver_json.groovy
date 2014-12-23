@@ -177,16 +177,19 @@ e.printStackTrace();
 		@Path("moveDown")
 		@Produces("application/json")
 		public Response moveDown(@QueryParam("path") String iPath) throws JSONException {
-			System.out.println("moveUp() - " + iPath);
+			System.out.println("moveDown() - " + iPath);
 			String targetSubdirName = LOWER_RANK;
 			File fileToMove = new File(iPath);
 			String higherRank = "_+";
+try {
 			if (fileToMove.getParentFile().getName().startsWith(higherRank)) {
-				moveToParentDir(fileToMove);
+				moveToParentDir(iPath);
 			} else {
 				moveFileToSubfolder(iPath, targetSubdirName);
 			}
-
+} catch (Exception e) {
+	e.printStackTrace();
+}
 			JSONObject json = new JSONObject();
 			System.out.println("moveUp() - end");
 			return Response.ok().header("Access-Control-Allow-Origin", "*").entity(json.toString())
@@ -292,6 +295,7 @@ e.printStackTrace();
 		 *            - just the name, not the path
 		 */
 		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
+			System.out.println("moveFileToSubfolder() - Move " + iPath + " to " + targetSubdirName);
 			_1: {
 				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
 				System.out.println();
@@ -302,6 +306,7 @@ e.printStackTrace();
 				String destinationFilePath;
 				String fileShortName = FilenameUtils.getName(iPath);
 				System.out.println("moveFileToSubfolder() - checking if exists");
+				File destinationFile;
 				if (theTargetDir.exists()) {
 					System.out
 							.println("moveFileToSubfolder() - dir already exists, need to make sure existing file is not overwritten");
@@ -310,12 +315,14 @@ e.printStackTrace();
 					String extension = FilenameUtils.getExtension(destinationFilePath);
 					String destinationFilePathWithoutExtension = destinationFilePath.substring(0,
 							destinationFilePath.lastIndexOf('.'));
-					File destinationFile = new File(destinationFilePath);
+					destinationFile = new File(destinationFilePath);
 					while (destinationFile.exists()) {
+	                                        System.out.println("Already exists: " + destinationFilePath);
 						destinationFilePathWithoutExtension += "1";
 						destinationFilePath = destinationFilePathWithoutExtension + "." + extension;
 						destinationFile = new File(destinationFilePath);
 					}
+					System.out.println("Does not exist, creating: " + destinationFilePath);
 					fileShortName = FilenameUtils.getName(destinationFilePath);
 					// Double check, for now. We don't want to lose any images
 					if (destinationFile.exists()) {
@@ -325,7 +332,7 @@ e.printStackTrace();
 
 				try {
 					System.out.println("moveFileToSubfolder() - about to move");
-					FileUtils.moveFileToDirectory(fileToMove, theTargetDir, createTargetDir);
+					FileUtils.moveFile(fileToMove, destinationFile);
 					System.out.println("moveFileToSubfolder() - success");
 					check: {
 						File newFile = new File(theTargetDirPath + "/" + fileShortName);
@@ -363,6 +370,9 @@ e.printStackTrace();
 
                         rHttpUrl = rHttpUrl.replaceFirst(".*/e/Sridhar/Photos",
                                         "http://netgear.rohidekar.com:8022/");
+
+                        rHttpUrl = rHttpUrl.replaceFirst(".*/e/Sridhar/Web",
+                                        "http://netgear.rohidekar.com:8006/");
 
                         // Books
                         rHttpUrl = rHttpUrl.replaceFirst(".*/e/Sridhar/Books",
