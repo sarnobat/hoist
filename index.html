@@ -55,6 +55,7 @@ function getImages(url) {
 	// TODO (minor): update the combo box value
 
 	$("#thumbnails").append(dir);
+	$("#thumbnails").append("<table>");
 	var videoCount = 0;
     $.getJSON("http://netgear.rohidekar.com:4463/helloworld/json?dir=" + encodeURIComponent(dir),function(result){
 		var sectionNumbers = [];
@@ -63,8 +64,10 @@ function getImages(url) {
 		for (var i = 0; i < sectionNumbers.length; i++) {
 			var sectionNumber = sectionNumbers[i];
 			console.debug(sectionNumber);
-			var section = $("<div>").attr("id", sectionNumber).attr("style","float : left").attr("align", "center");
+			var section = $("<tr>").attr("id", sectionNumber).attr('width','100%');
+//.attr("style","float : left").attr("align", "center");
 			section.append($("<h1>").append("Level " + sectionNumber));
+                        $("#thumbnails").append($("<hr>"));
 			$("#thumbnails").append(section);
 			var v2 = shuffle(result[sectionNumber]);
 			var height = 300 - (sectionNumber * 3 * 20);
