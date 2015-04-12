@@ -351,7 +351,7 @@ try {
                         // Unsorted
                         String rHttpUrl = iAbsolutePath.replaceFirst("/Volumes/Unsorted/",
                                         "http://netgear.rohidekar.com:8020/");
-                        rHttpUrl = rHttpUrl.replaceFirst("/media/sarnobat/Unsorted/",
+                        rHttpUrl = rHttpUrl.replaceFirst(".*/Unsorted/",
                                         "http://netgear.rohidekar.com:8020/");
 
                         // Record
