@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
@@ -33,8 +32,8 @@ import org.json.JSONObject;
 
 import com.sun.net.httpserver.HttpServer;
 
-public class HoistServer {
-	@Path("helloworld")
+public class Hoist {
+	@javax.ws.rs.Path("helloworld")
 	public static class HelloWorldResource { // Must be public
 
 		private static final String HIGHER_RANK = "_+1";
@@ -51,7 +50,7 @@ public class HoistServer {
 		// Read-only operations
 		//
 		@GET
-		@Path("json")
+		@javax.ws.rs.Path("json")
 		@Produces("application/json")
 		public Response json(@QueryParam("dir") String iPath) throws JSONException,
 				UnsupportedEncodingException {
@@ -159,9 +158,9 @@ e.printStackTrace();
 		//
 
 		@GET
-		@Path("moveUp")
+		@javax.ws.rs.Path("moveUp")
 		@Produces("application/json")
-		public Response moveUp(@QueryParam("path") String iPath) throws JSONException {
+		public Response moveUp(@QueryParam("path") String iPath) throws JSONException, IOException {
 			System.out.println("moveUp() - " + iPath);
 
 			String targetSubdirName = HIGHER_RANK;
@@ -174,7 +173,7 @@ e.printStackTrace();
 		}
 
 		@GET
-		@Path("moveDown")
+		@javax.ws.rs.Path("moveDown")
 		@Produces("application/json")
 		public Response moveDown(@QueryParam("path") String iPath) throws JSONException {
 			System.out.println("moveDown() - " + iPath);
@@ -266,9 +265,9 @@ try {
                 }
 
 		@GET
-		@Path("duplicate")
+		@javax.ws.rs.Path("duplicate")
 		@Produces("application/json")
-		public Response removeDuplicate(@QueryParam("path") String iPath) throws JSONException {
+		public Response removeDuplicate(@QueryParam("path") String iPath) throws JSONException, IOException {
 			String targetSubdirName = "duplicates";
 			moveFileToSubfolder(iPath, targetSubdirName);
 			JSONObject json = new JSONObject();
@@ -278,7 +277,7 @@ try {
 		}
 		
 		@GET
-		@Path("wrongCategory")
+		@javax.ws.rs.Path("wrongCategory")
 		@Produces("application/json")
 		public Response wrongCategory(@QueryParam("path") String iPath) throws JSONException {
 			moveToParentDir(iPath);
@@ -294,7 +293,7 @@ try {
 		 * @param targetSubdirName
 		 *            - just the name, not the path
 		 */
-		private static void moveFileToSubfolder(String iPath, String targetSubdirName) {
+		private static void moveFileToSubfolder(String iPath, String targetSubdirName) throws IOException {
 			System.out.println("moveFileToSubfolder() - Move " + iPath + " to " + targetSubdirName);
 			_1: {
 				String theContainingDirPath = FilenameUtils.getFullPath(iPath);
@@ -306,7 +305,12 @@ try {
 				String destinationFilePath;
 				String fileShortName = FilenameUtils.getName(iPath);
 				System.out.println("moveFileToSubfolder() - checking if exists");
-				File destinationFile;
+				File destinationFile = null;
+				if (fileToMove.exists()) {
+					if (!theTargetDir.exists()) {
+						Files.createDirectory(Paths.get(theTargetDirPath));
+					}
+				}
 				if (theTargetDir.exists()) {
 					System.out
 							.println("moveFileToSubfolder() - dir already exists, need to make sure existing file is not overwritten");
@@ -331,6 +335,9 @@ try {
 				}
 
 				try {
+					if (destinationFile == null) {
+						throw new RuntimeException("Destination file is null");
+					}
 					System.out.println("moveFileToSubfolder() - about to move");
 					FileUtils.moveFile(fileToMove, destinationFile);
 					System.out.println("moveFileToSubfolder() - success");

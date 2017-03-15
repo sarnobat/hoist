@@ -73,6 +73,7 @@ function getImages(url) {
 			var height = 300 - (sectionNumber * 3 * 20);
 			
 			var localVideoCount = 0;
+			var localImageCount = 0;
 			$.each(v2, function(i, file){
 				var field = file.localPath;
 				var filePath = file.localPath;
@@ -93,7 +94,10 @@ function getImages(url) {
 					}
 					localVideoCount++;
 				} else {
-					img = $("<img>").attr("src", webLink ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
+					if (localImageCount < 20) {
+						img = $("<img>").attr("src", webLink.replace('netgear.rohidekar.com','192.168.1.2') ).attr("height",height + "px").attr("border","3px").attr("style","border-color:#ffffff;");
+					}
+					localImageCount++;
 				}
 				var href = $("<a>");
 				href.attr("href", webLink).attr("target","_blank");
@@ -145,6 +149,9 @@ $(document).ready(function(){
 		
 		<option></option>
 		-->
+		<option>/e/Sridhar/Photos/camera phone photos/iPhone/2015-04-13/20150413-233008/2015-04_Wrestlemania_etc/Sridhar</option>
+		<option>/e/Sridhar/Photos/camera phone photos/iPhone/2015-04-13/20150413-233008/2015-04_Wrestlemania_etc/no_people</option>
+                <option>/e/Sridhar/Photos/camera phone photos/iPhone/2015-04-13/20150413-233008/2015-04_Wrestlemania_etc</option>
                 <option>/Unsorted/images/soccer</option>
 		<option>/e/Drive J/pictures/Other (new)/pictures/misc_sync_master/ind/btt</option>
                 <option>/e/Drive J/pictures/Other (new)/pictures/misc_sync_master/ind/brst</option>
